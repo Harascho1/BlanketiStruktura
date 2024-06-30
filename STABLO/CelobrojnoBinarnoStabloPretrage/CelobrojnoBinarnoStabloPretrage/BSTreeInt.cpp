@@ -380,6 +380,27 @@ int BSTreeInt::countSmaller(const int d) {
 	return countSmaller(root, d);
 }
 
+void BSTreeInt::balance() {
+	const int n = numOfElements;
+	int* stack = new int[n];
+	int i = 0;
+	while (root) {
+		stack[i++] = root->getKey();
+		deleteByCopying(root->getKey());
+	}
+	for (int i = 0; i < n - 2; i++) {
+		for (int j = i + 1; j < n - 1; j++) {
+			if (stack[j] < stack[i]) {
+				int temp = stack[i];
+				stack[i] = stack[j];
+				stack[j] = temp;
+			}
+		}
+	}
+	balance(stack, 0, n - 1);
+	delete[] stack;
+}
+
 int BSTreeInt::inorderDistance(int a, int b) {
 	int brojCvorova = inorderDistance(root, a, b);
 	return brojCvorova == numOfElements ? -1 : brojCvorova;
